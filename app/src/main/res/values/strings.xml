@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DrinkingBuddies</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="drinking_buddies">Drinking Buddies</string>
+    <string name="content_cheers_image">Cheers Image</string>
 </resources>
