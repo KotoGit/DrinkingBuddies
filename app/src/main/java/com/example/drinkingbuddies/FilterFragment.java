@@ -1,4 +1,4 @@
-package edu.fsu.cs.drinkingbuddy;
+package com.example.drinkingbuddies;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
