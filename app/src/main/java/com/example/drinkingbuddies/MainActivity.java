@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.FragmentActivity;
+
 public class MainActivity extends Activity {
     private Button loginButton;
     private Button registerButton;
