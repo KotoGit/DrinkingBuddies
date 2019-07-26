@@ -10,29 +10,29 @@ import android.net.Uri;
 
 public class BarProvider extends ContentProvider {
     public static final int DBVERSION = 1;
-    private static final String DBNAME = "BARDB";
-    private static final Uri CONTENT_URI = Uri.parse("content://com.example.drinkingbuddies.provider");
+    public static final String DBNAME = "BARDB";
+    public static final Uri CONTENT_URI = Uri.parse("content://com.example.drinkingbuddies.provider");
     DataHelper mDataHelper;
 
     //Login table constants
-    private static final String TABLE_LOGINTABLE = "LoginTable";
-    private static final String COLUMN_USERNAME = "Username";
-    private static final String COLUMN_PASSWD = "Passwd";
-    private static final String COLUMN_FAVLIST = "Favlist";
-    private static final String COLUMN_PRICEPREF = "Pricepref";
-    private static final String COLUMN_HOURPREF = "Hourpref";
-    private static final String SQL_CREATE_LOGIN = "CREATE TABLE " + TABLE_LOGINTABLE + "(" + "_ID INTEGER PRIMARY KEY, " +
+    public static final String TABLE_LOGINTABLE = "LoginTable";
+    public static final String COLUMN_USERNAME = "Username";
+    public static final String COLUMN_PASSWD = "Passwd";
+    public static final String COLUMN_FAVLIST = "Favlist";
+    public static final String COLUMN_PRICEPREF = "Pricepref";
+    public static final String COLUMN_HOURPREF = "Hourpref";
+    public static final String SQL_CREATE_LOGIN = "CREATE TABLE " + TABLE_LOGINTABLE + "(" + "_ID INTEGER PRIMARY KEY, " +
             COLUMN_USERNAME + " TEXT," + COLUMN_PASSWD + " TEXT," +
             COLUMN_FAVLIST + " TEXT," + COLUMN_PRICEPREF + " TEXT," +
             COLUMN_HOURPREF + " TEXT)";
 
     //Location table constants
-    private static final String TABLE_LOCATIONTABLE = "LocationTable";
-    private static final String COLUMN_NAME = "Name";
-    private static final String COLUMN_COORDINATES = "Coordinates";
-    private static final String COLUMN_HOUR = "Hour";
-    private static final String COLUMN_PRICE = "Price";
-    private static final String SQL_CREATE_LOCATION = "CREATE TABLE " + TABLE_LOCATIONTABLE + "(" + "_ID INTEGER PRIMARY KEY, " +
+    public static final String TABLE_LOCATIONTABLE = "LocationTable";
+    public static final String COLUMN_NAME = "Name";
+    public static final String COLUMN_COORDINATES = "Coordinates";
+    public static final String COLUMN_HOUR = "Hour";
+    public static final String COLUMN_PRICE = "Price";
+    public static final String SQL_CREATE_LOCATION = "CREATE TABLE " + TABLE_LOCATIONTABLE + "(" + "_ID INTEGER PRIMARY KEY, " +
             COLUMN_NAME + " TEXT," + COLUMN_COORDINATES + " TEXT," +
             COLUMN_HOUR + " TEXT," + COLUMN_PRICE + " TEXT)";
 
@@ -51,6 +51,7 @@ public class BarProvider extends ContentProvider {
         }
     }
 
+    //use the Uri to get the table names
     /****** DELETE METHODS ******/
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
