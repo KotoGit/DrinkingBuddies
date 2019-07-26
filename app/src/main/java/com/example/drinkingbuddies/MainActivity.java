@@ -2,10 +2,15 @@ package com.example.drinkingbuddies;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 String strUsername = username.getText().toString();
                 String strPass = pass.getText().toString();
                 //check if username and pass match the database
+
             }
         });
         loginCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +87,29 @@ public class MainActivity extends AppCompatActivity {
                 //register parsing logic
                 String strUsername = regUser.getText().toString();
                 String strPass = regPass.getText().toString();
-                //check if username and paswd already exist in database
+                //check if username lready exists in database
+                Cursor myCursor;
+                String[] myProjection = {BarProvider.COLUMN_USERNAME};
+                String mySelection = BarProvider.COLUMN_USERNAME + " = ? ";
+                String[] mySelectionArgs = {strUsername};
+                try{
+                    myCursor = getContentResolver().query(BarProvider.CONTENT_URI_LOG, myProjection, mySelection, mySelectionArgs, null);
+                    if(myCursor.moveToFirst()){
+                        //username is already in the database
+                        Toast.makeText(MainActivity.this, "This username is already in use.", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        //username is not in database
+                        ContentValues cvs = new ContentValues();
+                        cvs.put(BarProvider.COLUMN_USERNAME, strUsername);
+                        cvs.put(BarProvider.COLUMN_PASSWD, strPass);
+                        Uri uri = getContentResolver().insert(BarProvider.CONTENT_URI_LOG, cvs);
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }
             }
         });
         regCancelButton.setOnClickListener(new View.OnClickListener() {

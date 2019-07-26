@@ -37,8 +37,8 @@ public class BarProvider extends ContentProvider {
             COLUMN_HOUR + " TEXT," + COLUMN_PRICE + " TEXT)";
 
     public static final String PROVIDER = "com.example.drinkingbuddies.provider";
-    public static final Uri CONTENT_URI_LOC = Uri.parse("content://com.example.drinkingbuddies.provider" + TABLE_LOCATIONTABLE);
-    public static final Uri CONTENT_URI_LOG = Uri.parse("content://com.example.drinkingbuddies.provider" + TABLE_LOGINTABLE);
+    public static final Uri CONTENT_URI_LOC = Uri.parse("content://com.example.drinkingbuddies.provider" + "/" + TABLE_LOCATIONTABLE);
+    public static final Uri CONTENT_URI_LOG = Uri.parse("content://com.example.drinkingbuddies.provider" + "/" + TABLE_LOGINTABLE);
     protected static final class DataHelper extends SQLiteOpenHelper{
         DataHelper(Context context){
             super(context, DBNAME, null, DBVERSION);
