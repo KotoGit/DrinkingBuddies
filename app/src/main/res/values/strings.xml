@@ -8,4 +8,7 @@
     <string name="bar_filter"></string>
     <string name="spend_prompt"></string>
     <string name="find_a_bar"></string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register_title">REGISTER</string>
 </resources>

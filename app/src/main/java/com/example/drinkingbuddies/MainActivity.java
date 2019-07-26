@@ -7,26 +7,37 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
-    private Button loginButton, registerButton, finalLoginButton, loginCancelButton;
+public class MainActivity extends AppCompatActivity {
+    private Button loginButton, registerButton, finalLoginButton, loginCancelButton, finalRegisterButton, regCancelButton;
     private Dialog logDialog, regDialog;
-    private EditText username, pass;
+    private EditText username, pass, regUser, regPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Login Dialog Setup
         logDialog = new Dialog(this);
         logDialog.setContentView(R.layout.login_dialog);
-        loginButton = (Button)findViewById(R.id.loginButton);
-        registerButton = (Button)findViewById(R.id.registerButton);
         finalLoginButton = (Button)logDialog.findViewById(R.id.final_login_button);
         loginCancelButton = (Button)logDialog.findViewById(R.id.login_cancel_button);
         username = (EditText)logDialog.findViewById(R.id.login_name);
         pass = (EditText)logDialog.findViewById(R.id.login_pass);
+
+        //Register Dialog Setup
+        regDialog = new Dialog(this);
+        regDialog.setContentView(R.layout.register_dialog);
+        finalRegisterButton = (Button)regDialog.findViewById(R.id.final_reg_button);
+        regCancelButton = (Button)regDialog.findViewById(R.id.reg_cancel_button);
+        regUser = (EditText)regDialog.findViewById(R.id.reg_name);
+        regPass = (EditText)regDialog.findViewById(R.id.reg_pass);
+
+        //Main Page Setup
+        loginButton = (Button)findViewById(R.id.loginButton);
+        registerButton = (Button)findViewById(R.id.registerButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,10 +73,22 @@ public class MainActivity extends Activity {
     }
 
     private void registerDialog(){
-        regDialog = new Dialog(this);
         regDialog.setCancelable(false);
-        //regDialog.setContentView(R.layout.register_dialog);
-        //Button finalRegisterButton = (Button)findViewById();
-
+        regDialog.show();
+        finalRegisterButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //register parsing logic
+                String strUsername = regUser.getText().toString();
+                String strPass = regPass.getText().toString();
+                //check if username and paswd already exist in database
+            }
+        });
+        regCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                regDialog.dismiss();
+            }
+        });
     }
 }
