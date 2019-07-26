@@ -10,12 +10,9 @@ import android.widget.EditText;
 import androidx.fragment.app.FragmentActivity;
 
 public class MainActivity extends Activity {
-    private Button loginButton;
-    private Button registerButton;
-    private Button finalLoginButton;
-    private Button loginCancelButton;
-    private Dialog logDialog;
-    private Dialog regDialog;
+    private Button loginButton, registerButton, finalLoginButton, loginCancelButton;
+    private Dialog logDialog, regDialog;
+    private EditText username, pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +25,8 @@ public class MainActivity extends Activity {
         registerButton = (Button)findViewById(R.id.registerButton);
         finalLoginButton = (Button)logDialog.findViewById(R.id.final_login_button);
         loginCancelButton = (Button)logDialog.findViewById(R.id.login_cancel_button);
+        username = (EditText)logDialog.findViewById(R.id.login_name);
+        pass = (EditText)logDialog.findViewById(R.id.login_pass);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,8 +48,6 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //login parsing logic
-                EditText username = (EditText)findViewById(R.id.login_name);
-                EditText pass = (EditText)findViewById(R.id.login_pass);
                 String strUsername = username.getText().toString();
                 String strPass = pass.getText().toString();
                 //check if username and pass match the database
