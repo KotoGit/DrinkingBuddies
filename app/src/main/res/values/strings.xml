@@ -4,10 +4,8 @@
     <string name="register">Register</string>
     <string name="drinking_buddies">Drinking Buddies</string>
     <string name="content_cheers_image">Cheers Image</string>
-    <string name="hello_blank_fragment"></string>
-    <string name="bar_filter"></string>
-    <string name="spend_prompt"></string>
-    <string name="find_a_bar"></string>
+    <string name="spend_prompt">How much would you like to spend?</string>
+    <string name="find_a_bar">Bar Filter</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="register_title">REGISTER</string>
