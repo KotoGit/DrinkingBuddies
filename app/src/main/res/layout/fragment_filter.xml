@@ -92,4 +92,12 @@
         android:layout_marginLeft="50dp"
         app:srcCompat="@drawable/beer" />
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar_listview"
+        android:layout_marginTop="170dp"
+        android:layout_alignParentTop="true"
+        />
+
 </RelativeLayout>
