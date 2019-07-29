@@ -8,6 +8,7 @@
         android:id="@+id/TitleTextView"
         android:layout_width="165dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_bold"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -22,6 +23,7 @@
         android:id="@+id/prompt"
         android:layout_width="164dp"
         android:layout_height="106dp"
+        android:fontFamily="@font/alegreya_bold"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -37,6 +39,8 @@
         android:id="@+id/query_amount"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:inputType="number"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -54,18 +58,7 @@
         android:text="@string/find_a_bar"
         android:layout_marginLeft="125dp"
         android:layout_marginStart="125dp" />
-
-    <TextView
-        android:id="@+id/loading_text"
-        android:layout_width="141dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="125dp"
-        android:layout_marginLeft="125dp"
-        android:layout_marginTop="250dp"
-        android:text="@string/find_a_bar"
-        android:visibility="invisible" />
-
+    
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="75dp"
@@ -93,11 +86,11 @@
         app:srcCompat="@drawable/beer" />
 
     <ListView
+        android:id="@+id/bar_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bar_listview"
-        android:layout_marginTop="170dp"
         android:layout_alignParentTop="true"
-        />
+        android:layout_marginTop="230dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
