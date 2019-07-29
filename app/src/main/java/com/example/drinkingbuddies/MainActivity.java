@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
                         userInterfaceIntent.putExtras(userInterfaceBundle);
                         startActivity(userInterfaceIntent);
                     }
+                    else{
+                        //they don't match...
+                        Toast.makeText(MainActivity.this, "Username and password are not valid", Toast.LENGTH_SHORT).show();
+                    }
                 }catch(SQLException e){
                     e.printStackTrace();
                 }catch(NullPointerException e){
