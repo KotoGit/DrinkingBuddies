@@ -10,7 +10,7 @@
         android:id="@+id/user_interface_title"
         android:layout_width="313dp"
         android:layout_height="84dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/alegreya_bold"
         android:text="@string/user_interface"
         android:textSize="40sp"
@@ -36,9 +36,9 @@
         android:text="Preferences"
         android:fontFamily="@font/alegreya_bold"
         android:textSize="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/user_interface_title"
+        app:layout_constraintTop_toBottomOf="@+id/user_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
@@ -127,4 +127,16 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favorites_button" />
+
+    <TextView
+        android:id="@+id/user_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:fontFamily="@font/alegreya_bold"
+        android:textSize="20dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/user_interface_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
