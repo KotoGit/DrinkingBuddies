@@ -11,4 +11,6 @@
     <string name="password">Password</string>
     <string name="register_title">REGISTER</string>
     <string name="user_interface">User Interface</string>
+
+    <string name="google_maps_API_key">AIzaSyAyHXZQs6ILlrzm0IukFp2LqR8Ri38o8gw</string>
 </resources>
