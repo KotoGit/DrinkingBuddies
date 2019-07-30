@@ -3,6 +3,7 @@ package com.example.drinkingbuddies;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
@@ -67,7 +68,29 @@ public class MainActivity extends AppCompatActivity {
                 String strUsername = username.getText().toString();
                 String strPass = pass.getText().toString();
                 //check if username and pass match the database
-
+                Cursor myCursor;
+                String[] myProjection = {BarProvider.COLUMN_USERNAME, BarProvider.COLUMN_PASSWD};
+                String mySelection = BarProvider.COLUMN_USERNAME + " = ? AND " + BarProvider.COLUMN_PASSWD + " = ? ";
+                String[] mySelectionArgs = {strUsername, strPass};
+                try{
+                    myCursor = getContentResolver().query(BarProvider.CONTENT_URI_LOG, myProjection, mySelection, mySelectionArgs, null);
+                    if(myCursor.moveToFirst()){
+                        //username and passwd match the database -> login!
+                        Bundle userInterfaceBundle = new Bundle();
+                        userInterfaceBundle.putString("user", strUsername);
+                        Intent userInterfaceIntent = new Intent(view.getContext(), UserInterface.class);
+                        userInterfaceIntent.putExtras(userInterfaceBundle);
+                        startActivity(userInterfaceIntent);
+                    }
+                    else{
+                        //they don't match...
+                        Toast.makeText(MainActivity.this, "Username and password are not valid", Toast.LENGTH_SHORT).show();
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }
             }
         });
         loginCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
                         cvs.put(BarProvider.COLUMN_USERNAME, strUsername);
                         cvs.put(BarProvider.COLUMN_PASSWD, strPass);
                         Uri uri = getContentResolver().insert(BarProvider.CONTENT_URI_LOG, cvs);
+                        Bundle userInterfaceBundle = new Bundle();
+                        userInterfaceBundle.putString("user", strUsername);
+                        Intent userInterfaceIntent = new Intent(view.getContext(), UserInterface.class);
+                        userInterfaceIntent.putExtras(userInterfaceBundle);
+                        startActivity(userInterfaceIntent);
                     }
                 }catch(SQLException e){
                     e.printStackTrace();

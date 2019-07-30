@@ -141,24 +141,8 @@ public class BarProvider extends ContentProvider {
                       String[] selectionArgs) {
         switch(uriMatcher.match(uri)){
             case LOGIN:
-                String username = values.getAsString(COLUMN_USERNAME);
-                String passwd = values.getAsString(COLUMN_PASSWD);
-                if(username == null || passwd == null){
-                    return -1;
-                }
-                else if(username.equals("") || passwd.equals("")){
-                    return -1;
-                }
                 return mDataHelper.getWritableDatabase().update(TABLE_LOGINTABLE, values, selection, selectionArgs);
             case LOCATION:
-                String name = values.getAsString(COLUMN_NAME);
-                String coord = values.getAsString(COLUMN_COORDINATES);
-                if(name == null || coord == null){
-                    return -1;
-                }
-                else if(name.equals("") || coord.equals("")){
-                    return -1;
-                }
                 return mDataHelper.getWritableDatabase().update(TABLE_LOCATIONTABLE, values, selection, selectionArgs);
             default:
                 return 0;
