@@ -47,7 +47,8 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemClickL
 
         queryButton = (Button) rootView.findViewById(R.id.query_button);
         dollarAmount = (EditText) rootView.findViewById(R.id.query_amount);
-        lv = (ListView) rootView.findViewById(R.id.bar_listview);
+        // TODO: Add listview
+        //lv = (ListView) rootView.findViewById(R.id.bar_listview);
        // Log.d("onCreateView","Here");
 
         queryButton.setOnClickListener(this);

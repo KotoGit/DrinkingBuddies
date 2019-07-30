@@ -26,13 +26,18 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name="com.example.drinkingbuddies.MainActivity" >
+        <activity
+            android:name="com.example.drinkingbuddies.MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.drinkingbuddies.UserInterface"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <provider
             android:name="com.android.tools.ir.server.InstantRunContentProvider"
