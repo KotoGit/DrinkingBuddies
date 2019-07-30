@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/TitleTextView"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="125dp"
+        android:layout_marginRight="125dp"
+        android:text="@string/bar_filter"
+        android:textSize="40dp" />
+
+    <TextView
+        android:id="@+id/prompt"
+        android:layout_width="164dp"
+        android:layout_height="106dp"
+        android:fontFamily="@font/alegreya_bold"
+        android:textSize="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="550dp"
+        android:text="@string/spend_prompt"
+       />
+
+    <EditText
+        android:id="@+id/query_amount"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:inputType="number"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
+        android:hint="$$$" />
+
+    <Button
+        android:id="@+id/query_button"
+        android:layout_width="141dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="175dp"
+        android:text="@string/find_a_bar"
+        android:layout_marginLeft="125dp"
+        android:layout_marginStart="125dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="75dp"
+        android:layout_height="66dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:srcCompat="@drawable/beer" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="75dp"
+        android:layout_height="66dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        app:srcCompat="@drawable/beer" />
+
+    <ListView
+        android:id="@+id/bar_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="230dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/mapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="175dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
+        android:text="Temp" />
+
+</RelativeLayout>
