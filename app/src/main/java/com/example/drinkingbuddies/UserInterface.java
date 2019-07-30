@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class UserInterface extends AppCompatActivity {
     TextView userTitle;
     EditText priceText, hourText;
-    Button priceButton, hourButton;
+    Button priceButton, hourButton, filterButton;
     String username;
 
     @Override
@@ -32,6 +32,7 @@ public class UserInterface extends AppCompatActivity {
         hourText = (EditText)findViewById(R.id.hour_pref_text);
         priceButton = (Button)findViewById(R.id.price_pref_button);
         hourButton = (Button)findViewById(R.id.hour_pref_button);
+        filterButton = (Button) findViewById(R.id.to_filter_button);
 
         priceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +45,14 @@ public class UserInterface extends AppCompatActivity {
                     int result = getContentResolver().update(BarProvider.CONTENT_URI_LOG, cvs, BarProvider.COLUMN_USERNAME + " = ?", new String[]{username});
                 }
             }
+        });
+        
+        filterButton.setOnClickListener( new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    Intent filterIntent = new Intent(view.getContext(), FilterActivity.class);
+                    startActivity(filterIntent);
+                }
         });
     }
 
