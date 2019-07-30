@@ -1,5 +1,7 @@
 package com.example.drinkingbuddies;
+import android.app.Dialog;
 import android.content.ContentProvider;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -22,6 +24,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
 public class FilterFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener {
     private Button queryButton;
     private EditText dollarAmount;
@@ -29,6 +34,9 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemClickL
     private String dollar;
     private Cursor mCursor;
     private ListView lv;
+
+    private static final String TAG = "MainActivitiy";
+    private static final int ERROR_DIALOG_REQUEST = 9001;
 
     public FilterFragment() {
         // Required empty public constructor
@@ -53,8 +61,48 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemClickL
 
         queryButton.setOnClickListener(this);
 
+        if(isServicesOK()){             //just does some location checking stuff for Spence's part
+            init();                     //when button is clicked, go to map fragment
+        }
+
         return rootView;
     }
+
+
+    //------------------------------------------------Spence's code
+
+    private void init(){
+        Button mapButton = (Button) getView().findViewById(R.id.mapButton);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getActivity(), MapActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public boolean isServicesOK(){
+        Log.d(TAG, "isServicesOK: checking google services version");
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
+        if(available == ConnectionResult.SUCCESS){
+            //yay
+            Log.d(TAG, "isServicesOK: GooglePlayServices is working");
+            return true;
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occurred, we can fix it tho
+            Log.d(TAG, "isServicesOK: an error occurred but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }
+        else{
+        }
+        return false;
+
+    }
+
+    //------------------------------------------------------------------------------
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int i, long l )
