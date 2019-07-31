@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         userInterfaceBundle.putString("user", strUsername);
                         Intent userInterfaceIntent = new Intent(view.getContext(), UserInterface.class);
                         userInterfaceIntent.putExtras(userInterfaceBundle);
+                        logDialog.dismiss();
                         startActivity(userInterfaceIntent);
                     }
                     else{
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         userInterfaceBundle.putString("user", strUsername);
                         Intent userInterfaceIntent = new Intent(view.getContext(), UserInterface.class);
                         userInterfaceIntent.putExtras(userInterfaceBundle);
+                        regDialog.dismiss();
                         startActivity(userInterfaceIntent);
                     }
                 }catch(SQLException e){
