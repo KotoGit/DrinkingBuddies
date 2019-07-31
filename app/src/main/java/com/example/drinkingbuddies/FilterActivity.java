@@ -23,7 +23,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 public class FilterActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
 
-    private Button queryButton;
+    private Button queryButton, logoutButton, mapButton;
     private EditText dollarAmount;
     private String [] bars;
     private String dollar;
@@ -40,9 +40,11 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
 
         queryButton = (Button) findViewById(R.id.query_button);
         dollarAmount = (EditText) findViewById(R.id.query_amount);
+        logoutButton = (Button) findViewById(R.id.logout_button);
 
 
         queryButton.setOnClickListener(this);
+        logoutButton.setOnClickListener(this);
 
         if(isServicesOK()){             //just does some location checking stuff for Spence's part
             init();                     //when button is clicked, go to map fragment
@@ -50,7 +52,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void init(){
-        Button mapButton = (Button) findViewById(R.id.mapButton);
+        mapButton = (Button) findViewById(R.id.mapButton);
         mapButton.setOnClickListener(this);
     }
 
@@ -160,6 +162,12 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
         {
             Log.d("Map","clicked");
             Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            startActivity(intent);
+        }
+
+        else if ( view.getId() == R.id.logout_button)
+        {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }
 
