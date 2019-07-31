@@ -20,10 +20,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.maps.model.LatLng;
 
 public class FilterActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
 
-    private Button queryButton, logoutButton, mapButton;
+    private Button queryButton, logoutButton;
     private EditText dollarAmount;
     private String [] bars;
     private String dollar;
@@ -46,38 +47,8 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
         queryButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
 
-        if(isServicesOK()){             //just does some location checking stuff for Spence's part
-            init();                     //when button is clicked, go to map fragment
-        }
     }
 
-    private void init(){
-        mapButton = (Button) findViewById(R.id.mapButton);
-        mapButton.setOnClickListener(this);
-    }
-
-    //------------------------------------------------Spence's code
-    public boolean isServicesOK(){
-        Log.d(TAG, "isServicesOK: checking google services version");
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
-        if(available == ConnectionResult.SUCCESS){
-            //yay
-            Log.d(TAG, "isServicesOK: GooglePlayServices is working");
-            return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //an error occurred, we can fix it tho
-            Log.d(TAG, "isServicesOK: an error occurred but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(this, available, ERROR_DIALOG_REQUEST);
-            dialog.show();
-        }
-        else{
-        }
-        return false;
-
-    }
-
-    //------------------------------------------------------------------------------
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int i, long l )
     {
@@ -90,14 +61,14 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
             if (mCursor != null)
             {
                 mCursor.moveToFirst();
-                int coords = Integer.parseInt(mCursor.getString(2));
+                Double lat = Double.parseDouble(mCursor.getString(2));
+                Double lon = Double.parseDouble(mCursor.getString(3));
 
                 // TODO: Send coordinates to Spencer's fragment for directions
-                Bundle bundle = new Bundle();
-                bundle.putInt("coordinates", coords);
 
                 Intent mapIntent = new Intent( getApplicationContext(), MapActivity.class);
-                mapIntent.putExtras(bundle);
+                mapIntent.putExtra("latitude",lat);
+                mapIntent.putExtra("longitude", lon);
 
                 startActivity(mapIntent);
             }
@@ -158,13 +129,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
             {
                 Toast.makeText(this.getApplicationContext(), "Please enter valid dollar amount.", Toast.LENGTH_SHORT).show();
             }
-        }
-
-        else if ( view.getId() == R.id.mapButton )
-        {
-            Log.d("Map","clicked");
-            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-            startActivity(intent);
         }
 
         else if ( view.getId() == R.id.logout_button)
