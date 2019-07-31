@@ -223,8 +223,18 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
                             String name = jsonArray.getJSONObject(i).getJSONObject("restaurant").getString("name");
                             double lat = jsonArray.getJSONObject(i).getJSONObject("restaurant").getJSONObject("location").getDouble("latitude");
                             double lon = jsonArray.getJSONObject(i).getJSONObject("restaurant").getJSONObject("location").getDouble("longitude");
+                            int price = jsonArray.getJSONObject(i).getJSONObject("restaurant").getInt("average_cost_for_two");
+                            price = price/2;
                             barList.add(new Bar(name, new LatLng(lat, lon)));
+
+                            ContentValues cv = new ContentValues();
+                            cv.put(BarProvider.COLUMN_NAME, name);
+                            cv.put(BarProvider.COLUMN_LAT, String.valueOf(lat));
+                            cv.put(BarProvider.COLUMN_LON, String.valueOf(lon));
+                            cv.put(BarProvider.COLUMN_PRICE, price);
+                            Uri u = getActivity().getApplicationContext().getContentResolver().insert(BarProvider.CONTENT_URI_LOC, cv);
                             Log.v("LatLng", lat + ", " + lon);
+                            Log.v("Price", Integer.toString(price));
                         }
 
                         progressBar.setVisibility(View.INVISIBLE);
