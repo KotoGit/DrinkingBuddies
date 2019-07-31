@@ -140,10 +140,13 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
                     if(myCursor.moveToFirst()){
                         String currentFav = myCursor.getString(myCursor.getColumnIndex(BarProvider.COLUMN_FAVLIST));
                         myCursor.close();
-                        if(currentFav.compareTo("") != 0){
+                        if(currentFav.compareTo("") != 0 && !currentFav.contains(barName)){
                             ContentValues cvs = new ContentValues();
                             cvs.put(BarProvider.COLUMN_FAVLIST, currentFav + "," + barName);
                             int result = getActivity().getApplicationContext().getContentResolver().update(BarProvider.CONTENT_URI_LOG, cvs, mySelection, mySelectionArgs);
+                        }
+                        else if(currentFav.contains(barName)){
+                            //do nothing
                         }
                         else{
                             ContentValues cvs = new ContentValues();
