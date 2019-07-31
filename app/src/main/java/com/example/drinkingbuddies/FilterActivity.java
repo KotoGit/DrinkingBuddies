@@ -90,10 +90,16 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
             if (mCursor != null)
             {
                 mCursor.moveToFirst();
-                String coords = mCursor.getString(2);
+                int coords = Integer.parseInt(mCursor.getString(2));
 
                 // TODO: Send coordinates to Spencer's fragment for directions
+                Bundle bundle = new Bundle();
+                bundle.putInt("coordinates", coords);
 
+                Intent mapIntent = new Intent( getApplicationContext(), MapActivity.class);
+                mapIntent.putExtras(bundle);
+
+                startActivity(mapIntent);
             }
         }
         catch ( SQLiteException e)
@@ -122,10 +128,6 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
 
             if ( !dollar.equals("") && dollarInt > 0 ) {
 
-
-                Toast.makeText(this, "Amount is $" + dollarInt, Toast.LENGTH_SHORT).show();
-
-                // ScrollView possibly
                 String mSelectionClause = BarProvider.COLUMN_PRICE + " <= ? ";
                 final String[] mSelectionArgs = new String[]{dollar};
 
