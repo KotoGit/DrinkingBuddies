@@ -28,6 +28,7 @@
     <uses-permission android:name="com.example.drinkingbuddies.permission.C2D_MESSAGE" />
 
     <application
+        android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
@@ -37,6 +38,10 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.drinkingbuddies.FilterActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

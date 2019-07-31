@@ -119,7 +119,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 9f);
 
                             LatLng current = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                            LatLng jacksonville = new LatLng(30.3322, -81.6567);                        //this will be the destination, change
+                            // Set jacksonville (ending LatLng) to position sent in from BarLocationsFragment
+                            LatLng jacksonville = new LatLng(getIntent().getDoubleExtra("latitude", 30.3322), getIntent().getDoubleExtra("longitude", -81.6567));                        //this will be the destination, change
                             mMap.addMarker(new MarkerOptions().position(jacksonville));
                             mMap.addMarker(new MarkerOptions().position(current));
 

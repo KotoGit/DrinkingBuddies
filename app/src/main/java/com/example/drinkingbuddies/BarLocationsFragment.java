@@ -1,6 +1,7 @@
 package com.example.drinkingbuddies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,6 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,10 +24,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -36,13 +43,13 @@ import java.util.List;
 import java.util.Map;
 
 // API functions!!! Need to make more accessible and add features
-public class BarLocationsFragment extends Fragment implements OnMapReadyCallback {
+public class BarLocationsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private final String URL = "https://developers.zomato.com/api/v2.1/";
     private final String API_KEY = "dd755fc4ccc5e5e90d898f165326aa4a";
 
     // Set to desired location to get bars in area
-    private final String LOCATION_QUERY = "Jacksonville";
+    private String locationQuery = "Jacksonville";
 
     public JSONObject jsonObject;
     public JSONArray jsonArray;
@@ -52,15 +59,35 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
     String cityID;
     String establishmentID = new String();
     GoogleMap googleMap;
+    ProgressBar progressBar;
+
+    private Button searchButton;
+    private EditText locationInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         queue = Volley.newRequestQueue(getContext());
 
-        // Populate barList with all bars found within LOCATION_QUERY
-        apiObjectQuery("cities", new String[]{"q"}, new String[]{LOCATION_QUERY});
+        View view = inflater.inflate(R.layout.fragment_bar_locations, container, false);
 
-        return inflater.inflate(R.layout.fragment_bar_locations, container, false);
+        searchButton = view.findViewById(R.id.search_button);
+        locationInput = view.findViewById(R.id.location_input);
+        progressBar = view.findViewById(R.id.loading_indicator);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                locationQuery = locationInput.getText().toString();
+                Log.v("query", locationQuery);
+                // Populate barList with all bars found within LOCATION_QUERY (AFTER MAP LOADS)
+                barList.clear();
+                googleMap.clear();
+                apiObjectQuery("cities", new String[]{"q"}, new String[]{locationQuery});
+            }
+        });
+
+        return view;
     }
 
     @Override
@@ -76,6 +103,21 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        googleMap.setOnInfoWindowClickListener(this);
+    }
+
+    // Clicking info card will pull up directions
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Bar bar = (Bar)marker.getTag();
+
+        // Provide latitude and longitude to MapActivity
+        Intent intent = new Intent(getActivity(), MapActivity.class);
+        intent.putExtra("latitude", bar.location.latitude);
+        intent.putExtra("longitude", bar.location.longitude);
+
+        // Start MapActivity
+        startActivity(intent);
     }
 
 
@@ -94,8 +136,10 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
 
                         if(!jsonArray.isNull(0))
                             jsonObject = jsonArray.getJSONObject(0);
-                        else
+                        else {
+                            progressBar.setVisibility(View.INVISIBLE);
                             return;
+                        }
 
                         cityID = jsonObject.getString("id");
                         apiObjectQuery("establishments", new String[]{"city_id"}, new String[]{cityID});
@@ -122,12 +166,22 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
                             double lat = jsonArray.getJSONObject(i).getJSONObject("restaurant").getJSONObject("location").getDouble("latitude");
                             double lon = jsonArray.getJSONObject(i).getJSONObject("restaurant").getJSONObject("location").getDouble("longitude");
                             barList.add(new Bar(name, new LatLng(lat, lon)));
-                            Log.v("LatLon", lat + ", " + lon);
+                            Log.v("LatLng", lat + ", " + lon);
                         }
 
+                        progressBar.setVisibility(View.INVISIBLE);
+
+                        // Used to ensure all markers are visible
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
                         for(int i = 0; i < barList.size(); i++) {
-                            googleMap.addMarker(new MarkerOptions().position(barList.get(i).location).title(barList.get(i).name));
+                            Marker m = googleMap.addMarker(new MarkerOptions().position(barList.get(i).location).title(barList.get(i).name));
+                            m.setTag(barList.get(i));
+                            builder.include(barList.get(i).location);
                         }
+
+                        // Zoom to all markers
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
                     }
                 }
                 catch(JSONException e) {
