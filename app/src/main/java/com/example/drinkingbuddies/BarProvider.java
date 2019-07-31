@@ -29,11 +29,12 @@ public class BarProvider extends ContentProvider {
     //Location table constants
     public static final String TABLE_LOCATIONTABLE = "LocationTable";
     public static final String COLUMN_NAME = "Name";
-    public static final String COLUMN_COORDINATES = "Coordinates";
+    public static final String COLUMN_LAT = "Latitude";
+    public static final String COLUMN_LON = "Longitude";
     public static final String COLUMN_HOUR = "Hour";
     public static final String COLUMN_PRICE = "Price";
     public static final String SQL_CREATE_LOCATION = "CREATE TABLE " + TABLE_LOCATIONTABLE + "(" + "_ID INTEGER PRIMARY KEY, " +
-            COLUMN_NAME + " TEXT," + COLUMN_COORDINATES + " TEXT," +
+            COLUMN_NAME + " TEXT," + COLUMN_LAT + " TEXT," + COLUMN_LON + " TEXT," +
             COLUMN_HOUR + " TEXT," + COLUMN_PRICE + " TEXT)";
 
     public static final String PROVIDER = "com.example.drinkingbuddies.provider";
@@ -101,11 +102,14 @@ public class BarProvider extends ContentProvider {
                 return Uri.withAppendedPath(CONTENT_URI_LOG, "" + id1);
             case LOCATION:
                 String name = values.getAsString(COLUMN_NAME);
-                String coord = values.getAsString(COLUMN_COORDINATES);
-                if(name == null || coord == null){
+                //String coord = values.getAsString(COLUMN_COORDINATES);
+
+                String lat = values.getAsString(COLUMN_LAT);
+                String lon = values.getAsString(COLUMN_LON);
+                if(name == null || lon == null  || lat == null){
                     return null;
                 }
-                else if(name.equals("") || coord.equals("")){
+                else if(name.equals("") || lon.equals("") || lat.equals("")){
                     return null;
                 }
 
