@@ -4,25 +4,33 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class UserInterface extends AppCompatActivity {
     private TextView userTitle, priceText, hourText;
     private Button prefButton, filterButton, mapButton, favButton, setButton, setCancelButton, cancelMapButton;
     private Dialog setDialog;
     private EditText updatePricePref, updateHourPref;
-    private String username;
+    private String username, favString;
     private Fragment mapFragment;
+    private String[] favList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +110,39 @@ public class UserInterface extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //populate dialog with list from database
+                favString = "";
+                Cursor myCursor;
+                String[] myProjection = {BarProvider.COLUMN_USERNAME, BarProvider.COLUMN_FAVLIST};
+                String mySelection = BarProvider.COLUMN_USERNAME + " = ?";
+                String[] mySelectionArgs = {username};
+                try{
+                    myCursor = getContentResolver().query(BarProvider.CONTENT_URI_LOG, myProjection, mySelection, mySelectionArgs, null);
+                    if(myCursor.moveToFirst()){
+                        favString = myCursor.getString(myCursor.getColumnIndex(BarProvider.COLUMN_FAVLIST));
+                        myCursor.close();
+                    }
+                    else{
+                        //they don't match...
+                        myCursor.close();
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }
+                if(favString.compareTo("") != 0){
+                    favList = favString.split(",");
+                }
+                AlertDialog.Builder favBuilder = new AlertDialog.Builder(UserInterface.this);
+                favBuilder.setIcon(R.drawable.ic_launcher_foreground);
+                favBuilder.setTitle("Your Favorites");
+                favBuilder.setItems(favList, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                AlertDialog myDialog = favBuilder.create();
+                myDialog.show();
             }
         });
         
@@ -121,6 +162,9 @@ public class UserInterface extends AppCompatActivity {
                 cancelMapButton.setVisibility(View.VISIBLE);
                 cancelMapButton.setClickable(true);
                 mapFragment = new BarLocationsFragment();
+                Bundle mapBundle = new Bundle();
+                mapBundle.putString("user", username);
+                mapFragment.setArguments(mapBundle);
                 FragmentManager fragMan = getSupportFragmentManager();
                 fragMan.beginTransaction().replace(R.id.mapFragmentContainer, mapFragment).commit();
             }
@@ -149,7 +193,7 @@ public class UserInterface extends AppCompatActivity {
                 int errorcounter = 0;
                 boolean mustToast = false;
                 String price = updatePricePref.getText().toString();
-                String hour = updatePricePref.getText().toString();
+                String hour = updateHourPref.getText().toString();
                 if(price != null && price.compareTo("") != 0){
                     //update
                     ContentValues cvsPrice = new ContentValues();

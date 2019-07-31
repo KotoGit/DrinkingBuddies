@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
                         userInterfaceBundle.putString("user", strUsername);
                         Intent userInterfaceIntent = new Intent(view.getContext(), UserInterface.class);
                         userInterfaceIntent.putExtras(userInterfaceBundle);
+                        username.setText("");
+                        pass.setText("");
                         logDialog.dismiss();
                         startActivity(userInterfaceIntent);
                     }
@@ -131,11 +133,14 @@ public class MainActivity extends AppCompatActivity {
                         ContentValues cvs = new ContentValues();
                         cvs.put(BarProvider.COLUMN_USERNAME, strUsername);
                         cvs.put(BarProvider.COLUMN_PASSWD, strPass);
+                        cvs.put(BarProvider.COLUMN_FAVLIST, "");
                         Uri uri = getContentResolver().insert(BarProvider.CONTENT_URI_LOG, cvs);
                         Bundle userInterfaceBundle = new Bundle();
                         userInterfaceBundle.putString("user", strUsername);
                         Intent userInterfaceIntent = new Intent(view.getContext(), UserInterface.class);
                         userInterfaceIntent.putExtras(userInterfaceBundle);
+                        regUser.setText("");
+                        regPass.setText("");
                         regDialog.dismiss();
                         startActivity(userInterfaceIntent);
                     }

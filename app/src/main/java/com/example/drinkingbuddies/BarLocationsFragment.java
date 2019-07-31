@@ -1,7 +1,11 @@
 package com.example.drinkingbuddies;
 
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -47,6 +52,9 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
 
     private final String URL = "https://developers.zomato.com/api/v2.1/";
     private final String API_KEY = "dd755fc4ccc5e5e90d898f165326aa4a";
+    private Dialog favOrMapDialog;
+    private Button favSetButton, dirButton;
+    private String currentUser;
 
     // Set to desired location to get bars in area
     private String locationQuery = "Jacksonville";
@@ -69,6 +77,13 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
         queue = Volley.newRequestQueue(getContext());
 
         View view = inflater.inflate(R.layout.fragment_bar_locations, container, false);
+
+        favOrMapDialog = new Dialog(this.getContext());
+        favOrMapDialog.setContentView(R.layout.marker_dialog);
+        favSetButton = (Button)favOrMapDialog.findViewById(R.id.button_add_fav);
+        dirButton = (Button)favOrMapDialog.findViewById(R.id.button_get_dir);
+
+        currentUser = getArguments().getString("user");
 
         searchButton = view.findViewById(R.id.search_button);
         locationInput = view.findViewById(R.id.location_input);
@@ -110,14 +125,57 @@ public class BarLocationsFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onInfoWindowClick(Marker marker) {
         Bar bar = (Bar)marker.getTag();
+        favOrMapDialog.setCancelable(false);
+        favOrMapDialog.show();
+        favSetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String barName = bar.name;
+                Cursor myCursor;
+                String[] myProjection = {BarProvider.COLUMN_USERNAME, BarProvider.COLUMN_FAVLIST};
+                String mySelection = BarProvider.COLUMN_USERNAME + " = ? ";
+                String[] mySelectionArgs = {currentUser};
+                try{
+                    myCursor = getActivity().getApplicationContext().getContentResolver().query(BarProvider.CONTENT_URI_LOG, myProjection, mySelection, mySelectionArgs, null);
+                    if(myCursor.moveToFirst()){
+                        String currentFav = myCursor.getString(myCursor.getColumnIndex(BarProvider.COLUMN_FAVLIST));
+                        myCursor.close();
+                        if(currentFav.compareTo("") != 0){
+                            ContentValues cvs = new ContentValues();
+                            cvs.put(BarProvider.COLUMN_FAVLIST, currentFav + "," + barName);
+                            int result = getActivity().getApplicationContext().getContentResolver().update(BarProvider.CONTENT_URI_LOG, cvs, mySelection, mySelectionArgs);
+                        }
+                        else{
+                            ContentValues cvs = new ContentValues();
+                            cvs.put(BarProvider.COLUMN_FAVLIST, barName);
+                            int result = getActivity().getApplicationContext().getContentResolver().update(BarProvider.CONTENT_URI_LOG, cvs, mySelection, mySelectionArgs);
+                        }
+                    }
+                    else{
+                        //username is not in database for some reason
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }finally {
+                    favOrMapDialog.dismiss();
+                }
+            }
+        });
+        dirButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Provide latitude and longitude to MapActivity
+                Intent intent = new Intent(getActivity(), MapActivity.class);
+                intent.putExtra("latitude", bar.location.latitude);
+                intent.putExtra("longitude", bar.location.longitude);
 
-        // Provide latitude and longitude to MapActivity
-        Intent intent = new Intent(getActivity(), MapActivity.class);
-        intent.putExtra("latitude", bar.location.latitude);
-        intent.putExtra("longitude", bar.location.longitude);
-
-        // Start MapActivity
-        startActivity(intent);
+                // Start MapActivity
+                favOrMapDialog.dismiss();
+                startActivity(intent);
+            }
+        });
     }
 
 
