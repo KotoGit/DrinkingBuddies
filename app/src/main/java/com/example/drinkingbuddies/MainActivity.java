@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     myCursor = getContentResolver().query(BarProvider.CONTENT_URI_LOG, myProjection, mySelection, mySelectionArgs, null);
                     if(myCursor.moveToFirst()){
                         //username and passwd match the database -> login!
+                        myCursor.close();
                         Bundle userInterfaceBundle = new Bundle();
                         userInterfaceBundle.putString("user", strUsername);
                         Intent userInterfaceIntent = new Intent(view.getContext(), UserInterface.class);
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else{
                         //they don't match...
+                        myCursor.close();
                         Toast.makeText(MainActivity.this, "Username and password are not valid", Toast.LENGTH_SHORT).show();
                     }
                 }catch(SQLException e){
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 //register parsing logic
                 String strUsername = regUser.getText().toString();
                 String strPass = regPass.getText().toString();
-                //check if username lready exists in database
+                //check if username already exists in database
                 Cursor myCursor;
                 String[] myProjection = {BarProvider.COLUMN_USERNAME};
                 String mySelection = BarProvider.COLUMN_USERNAME + " = ? ";
@@ -118,11 +120,13 @@ public class MainActivity extends AppCompatActivity {
                 try{
                     myCursor = getContentResolver().query(BarProvider.CONTENT_URI_LOG, myProjection, mySelection, mySelectionArgs, null);
                     if(myCursor.moveToFirst()){
+                        myCursor.close();
                         //username is already in the database
                         Toast.makeText(MainActivity.this, "This username is already in use.", Toast.LENGTH_LONG).show();
                     }
                     else{
                         //username is not in database
+                        myCursor.close();
                         ContentValues cvs = new ContentValues();
                         cvs.put(BarProvider.COLUMN_USERNAME, strUsername);
                         cvs.put(BarProvider.COLUMN_PASSWD, strPass);

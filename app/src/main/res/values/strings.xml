@@ -13,4 +13,19 @@
     <string name="user_interface">User Interface</string>
 
     <string name="google_maps_API_key">AIzaSyAyHXZQs6ILlrzm0IukFp2LqR8Ri38o8gw</string>
+    <string name="set_preferences">Set Preferences</string>
+    <string name="set">SET</string>
+    <string name="price">Price</string>
+    <string name="happy_hour">Happy Hour</string>
+    <string name="preferences">Preferences</string>
+    <string name="mapping">Mapping</string>
+    <string name="textview">TextView</string>
+    <string name="filtering">Filtering</string>
+    <string name="activities">Activities</string>
+    <string name="favorites">Favorites</string>
+    <string name="plus">+</string>
+    <string name="view">View</string>
+    <string name="exit">Exit</string>
+    <string name="preferred_price">Preferred Price:</string>
+    <string name="preferred_hour">Preferred Hour:</string>
 </resources>
